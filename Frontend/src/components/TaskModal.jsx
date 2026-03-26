@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import API from "../api/axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function TaskModal({ isOpen, onClose, task, refreshTasks }) {
   const isEdit = Boolean(task);
+  const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     title: "",
@@ -57,9 +61,15 @@ export default function TaskModal({ isOpen, onClose, task, refreshTasks }) {
       refreshTasks();
       onClose();
     } catch (err) {
-      const errorMessage =
-        err.response?.data?.message || "Something went wrong. Please try again.";
-      toast.error(errorMessage);
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        toast.error("Token expired please login again");
+        logout();
+        navigate("/");
+      } else {
+        const errorMessage =
+          err.response?.data?.message || "Something went wrong. Please try again.";
+        toast.error(errorMessage);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -68,7 +78,7 @@ export default function TaskModal({ isOpen, onClose, task, refreshTasks }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex justify-center items-center">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-xl w-96 shadow-lg">
         <h2 className="text-lg font-bold mb-4 text-gray-800 dark:text-white">
           {isEdit ? "Edit Task" : "Create Task"}

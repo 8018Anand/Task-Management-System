@@ -10,23 +10,29 @@ import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar /> {/* GLOBAL NAVBAR */}
-      <Toaster position="bottom-left" />
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="bg-gray-100 dark:bg-gray-900">
+      <BrowserRouter>
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Navbar /> {/* GLOBAL NAVBAR */}
+          <Toaster position="bottom-left" />
+          <main>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+        </div>
+      </BrowserRouter>
+    </div>
   );
 }
 

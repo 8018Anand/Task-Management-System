@@ -17,45 +17,59 @@ export default function TaskCard({ task, onDelete, onToggle }) {
   const isOverdue = task.dueDate && new Date(task.dueDate) < today;
 
   return (
-    <div className="p-4 border rounded-xl shadow-sm bg-white dark:bg-gray-800">
-      <h2 className="font-semibold text-lg dark:text-white">{task.title}</h2>
+    <div className="p-4 border rounded-xl shadow-sm bg-white dark:bg-gray-800 flex justify-between items-start flex-wrap">
+      {/* LEFT SIDE */}
+      <div className="flex-1">
+        <h2 className="font-semibold text-lg dark:text-white">{task.title}</h2>
 
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        {task.description}
-      </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          {task.description}
+        </p>
 
-      <div className="flex gap-2 mt-3 items-center flex-wrap">
-        <span
-          className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${statusColors[task.status] || "bg-gray-200 text-gray-800"}`}
-        >
-          {task.status}
-        </span>
-        <span
-          className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${priorityColors[task.priority] || "bg-gray-200 text-gray-800"}`}
-        >
-          {task.priority}
-        </span>
-        <span
-          className={`text-xs font-medium px-2.5 py-0.5 rounded-full bg-gray-200 dark:bg-gray-600 ${isOverdue ? "text-red-500 dark:text-red-400" : " text-black dark:text-white"}`}
-        >
-          Due:{" "}
-          {task.dueDate
-            ? new Date(task.dueDate).toLocaleDateString('en-GB')
-            : "No Date"}
-        </span>
+        <div className="flex gap-2 mt-3 items-center flex-wrap">
+          <span
+            className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
+              statusColors[task.status] || "bg-gray-200 text-gray-800"
+            }`}
+          >
+            {task.status}
+          </span>
+
+          <span
+            className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
+              priorityColors[task.priority] || "bg-gray-200 text-gray-800"
+            }`}
+          >
+            {task.priority}
+          </span>
+
+          <span
+            className={`text-xs font-medium px-2.5 py-0.5 rounded-full bg-gray-200 dark:bg-gray-600 ${
+              isOverdue
+                ? "text-red-500 dark:text-red-400"
+                : "text-black dark:text-white"
+            }`}
+          >
+            Due:{" "}
+            {task.dueDate
+              ? new Date(task.dueDate).toLocaleDateString("en-GB")
+              : "No Date"}
+          </span>
+        </div>
       </div>
 
-      <div className="flex gap-2 mt-3 flex-wrap">
+      {/* RIGHT SIDE (Buttons) */}
+      <div className="flex mt-2 md:mt-0 gap-2 md:ml-4">
         <button
           onClick={() => onToggle(task)}
-          className="bg-blue-500 text-white px-2 py-1 rounded text-sm"
+          className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
         >
           Update
         </button>
 
         <button
           onClick={() => onDelete(task._id)}
-          className="bg-red-500 text-white px-2 py-1 rounded text-sm"
+          className="bg-red-500 text-white px-3 py-1 rounded text-sm"
         >
           Delete
         </button>

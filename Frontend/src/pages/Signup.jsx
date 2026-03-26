@@ -29,7 +29,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen flex items-center justify-center">
       <form
         className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-80"
         onSubmit={handleSubmit}

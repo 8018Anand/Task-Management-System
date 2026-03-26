@@ -9,7 +9,7 @@ const ProtectedRoute = ({children}) => {
   const location = useLocation()
 
   if (!token) {
-    toast.error('unauthorized access please login again')
+    // toast.error('unauthorized access please login again')
 
     return (<Navigate to="/" state={{ from: location }} replace />);
   }
