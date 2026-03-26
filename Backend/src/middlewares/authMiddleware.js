@@ -1,10 +1,12 @@
 const jwt = require("jsonwebtoken");
+const AppError = require("../utils/AppError");
+
 
 module.exports = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ message: "Not authorized" });
+    return next(new AppError("Not authorized", 401));
   }
 
   try {
@@ -12,6 +14,6 @@ module.exports = (req, res, next) => {
     req.user = decoded.id;
     next();
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    next(new AppError("Invalid token", 401));
   }
 };

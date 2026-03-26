@@ -26,4 +26,13 @@ const taskSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+// Core indexes (Analytics & Default Dashboard)
+taskSchema.index({user: 1});
+taskSchema.index({user:1, status:1});
+taskSchema.index({user:1, createdAt:-1});
+
+// Feature indexes (Sorting by Due Date & Filtering/Sorting by Priority)
+taskSchema.index({user: 1, dueDate: 1});
+taskSchema.index({user: 1, priority: 1});
+
 module.exports = mongoose.model("Task", taskSchema);

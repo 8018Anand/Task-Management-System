@@ -1,5 +1,6 @@
 const Task = require("../models/Task");
 const asyncHandler = require("../utils/asyncHandler");
+const AppError = require("../utils/AppError");
 
 // Create task
 exports.createTask = asyncHandler(async (req, res) => {
@@ -60,16 +61,27 @@ exports.getTasks = asyncHandler(async (req, res) => {
 
 // Update task
 exports.updateTask = asyncHandler(async (req, res) => {
-  const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
-    returnDocument: "after",
-  });
+  const task = await Task.findOneAndUpdate(
+    { _id: req.params.id, user: req.user },
+    req.body,
+    { returnDocument: "after" }
+  );
+
+  if (!task) {
+    throw new AppError("Task not found or unauthorized", 404);
+  }
 
   res.json(task);
 });
 
 // Delete task
 exports.deleteTask = asyncHandler(async (req, res) => {
-  await Task.findByIdAndDelete(req.params.id);
+  const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user });
+
+  if (!task) {
+    throw new AppError("Task not found or unauthorized", 404);
+  }
+
   res.json({ message: "Task deleted" });
 });
 
